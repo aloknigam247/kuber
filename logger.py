@@ -6,34 +6,34 @@ class Logger:
         Support error, info, wait and warning messages
     """
 
-    def error(message: str):
+    def error(*message: str):
         """ Generates error messages
 
         Args:
-            message (str): message to log
+            message (str): print() like messages to log
         """
-        print("|ERROR|", message)
+        print("ERROR:", *message)
 
-    def info(message: str):
+    def info(*message: str):
         """ Generates info messages
 
         Args:
-            message (str): message to log
+            message (str): print() like messages to log
         """
-        print("|INFO|", message)
+        print("INFO:", *message)
         
-    def wait(message: str):
+    def wait(*message: str):
         """ Generates wait messages
 
         Args:
-            message (str): message to log
+            message (str): print() like messages to log
         """
-        print(message, "...")
+        print(*message, "...")
 
-    def warn(message: str):
+    def warn(*message: str):
         """ Generates warn messages
 
         Args:
-            message (str): message to log
+            message (str): print() like messages to log
         """
-        print("|WARNING|", message)
+        print("WARNING:", *message)
