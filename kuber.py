@@ -2,12 +2,12 @@ import argparse
 import sys
 
 from logger import Logger as log
-from reports import Report
-from runconfig import RunConfig
-from stock import Stock
-from strategy import Strategy
-from trader import Trader
-from tradeseq import TradeSeq
+from reports import *
+from runconfig import *
+from stock import *
+from strategy import *
+from trader import *
+from tradeseq import *
 
 # Command line option parser
 cmdline = argparse.ArgumentParser(description="Kuber Trading Analysis")
@@ -41,25 +41,25 @@ tradeseq_list: list[TradeSeq] = []
 
 log.wait("Loading Traders")
 for item in config.getTraderList():
-    trader_list.append(Trader(item))
+    trader_list.append(TraderFactory.create(item))
 
 log.wait("Loading Strategies")
 for item in config.getStrategyList():
-    strategy_list.append(Strategy(item))
+    strategy_list.append(StrategyFactory.create(item))
 
 log.wait("Loading Stock")
 for item in config.getStockList():
-    stock_list.append(Stock(item))
+    stock_list.append(StockFactory.create(item))
 
 log.wait("Loading Reports")
 for item in config.getReportList():
-    report_list.append(Report(item))
+    report_list.append(ReportFactory.create(item))
 
 log.wait("Applying Strategies")
 for stock in stock_list:
     for trader in trader_list:
         for strategy in strategy_list:
-            trader_list.append(strategy.apply(trader, stock))
+            tradeseq_list.append(strategy.apply(trader, stock))
 
 log.wait("Generating Reports")
 for report in report_list:
