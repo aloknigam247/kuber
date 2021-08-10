@@ -13,17 +13,17 @@ class RunConfig:
     """
 
     def __init__(self) -> None:
-        self.run_name = "config"
-        self.tag_name = "Name"
-        self.tag_report = "Reports"
-        self.tag_stock = "Stocks"
-        self.tag_strategy = "Strategy"
-        self.tag_trader = "Traders"
+        self.__run_name = "config"
+        self.__tag_name = "Name"
+        self.__tag_report = "Reports"
+        self.__tag_stock = "Stocks"
+        self.__tag_strategy = "Strategy"
+        self.__tag_trader = "Traders"
 
-        self.report_list: list[str] = []
-        self.strategy_list: list[str] = []
-        self.stock_list: list[str] = []
-        self.trader_list: list[str] = []
+        self.__report_list: list[str] = []
+        self.__strategy_list: list[str] = []
+        self.__stock_list: list[str] = []
+        self.__trader_list: list[str] = []
 
     def __validateName(self, config: dict[str, str], valid_names: list[str], key: str) -> tuple[list[str], bool]:
         """ Validate names against valid name list and return valid names
@@ -54,7 +54,7 @@ class RunConfig:
                 result = False
 
         if not result:
-            log.info("valid", key, "types are", ', '.join(valid_names))
+            log.info("valid", key, "are", ', '.join(valid_names))
 
         return validated_list, result
 
@@ -64,14 +64,14 @@ class RunConfig:
         """
 
         json_config = {
-            self.tag_name     : self.run_name,
-            self.tag_report   : ReportFactory.getNames(),
-            self.tag_stock    : StockFactory.getNames(),
-            self.tag_strategy : StrategyFactory.getNames(),
-            self.tag_trader   : TraderFactory.getNames()
+            self.__tag_name     : self.__run_name,
+            self.__tag_report   : ReportFactory.getNames(),
+            self.__tag_stock    : StockFactory.getNames(),
+            self.__tag_strategy : StrategyFactory.getNames(),
+            self.__tag_trader   : TraderFactory.getNames()
         }
 
-        json_filename = self.run_name + ".json"
+        json_filename = self.__run_name + ".json"
         with open(json_filename, "w") as fp:
             json.dump(json_config, fp, indent=4)
         
@@ -95,25 +95,25 @@ class RunConfig:
         with open(config_file, "r") as fp:
             config = json.load(fp)
     
-        self.run_name = config[self.tag_name]
-        self.report_list, res1 = self.__validateName(config, ReportFactory.getNames(), self.tag_report)
-        self.stock_list, res2 = self.__validateName(config, StockFactory.getNames(), self.tag_stock)
-        self.strategy_list, res3 = self.__validateName(config, StrategyFactory.getNames(), self.tag_strategy)
-        self.trader_list, res4 = self.__validateName(config, TraderFactory.getNames(), self.tag_trader)
+        self.__run_name = config[self.__tag_name]
+        self.__report_list, res1 = self.__validateName(config, ReportFactory.getNames(), self.__tag_report)
+        self.__stock_list, res2 = self.__validateName(config, StockFactory.getNames(), self.__tag_stock)
+        self.__strategy_list, res3 = self.__validateName(config, StrategyFactory.getNames(), self.__tag_strategy)
+        self.__trader_list, res4 = self.__validateName(config, TraderFactory.getNames(), self.__tag_trader)
 
-        return res1 or res2 or res3 or res4
+        return res1 and res2 and res3 and res4
 
     def getRunName(self):
-        return self.run_name
+        return self.__run_name
 
     def getTraderList(self) -> list[str]:
-        return self.trader_list
+        return self.__trader_list
 
     def getStrategyList(self) -> list[str]:
-        return self.strategy_list
+        return self.__strategy_list
 
     def getStockList(self) -> list[str]:
-        return self.stock_list
+        return self.__stock_list
 
     def getReportList(self) -> list[str]:
-        return self.report_list
+        return self.__report_list

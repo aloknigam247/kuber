@@ -13,4 +13,4 @@ class ReportFactory:
             return None
 
     def getNames() -> list[str]:
-        return ReportFactory.__reports.keys()
+        return list(ReportFactory.__reports.keys())
