@@ -17,4 +17,4 @@ class StrategyFactory:
             return None
 
     def getNames() -> list[str]:
-        return StrategyFactory.__strategies.keys()
+        return list(StrategyFactory.__strategies.keys())
