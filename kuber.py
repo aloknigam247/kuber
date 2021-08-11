@@ -2,12 +2,12 @@ import argparse
 import sys
 
 from logger import Logger as log
+from metainfo import *
 from reports import *
 from runconfig import *
 from stock import *
 from strategy import *
 from trader import *
-from tradeseq import *
 
 # Command line option parser
 cmdline = argparse.ArgumentParser(description="Kuber Trading Analysis")
@@ -33,11 +33,11 @@ if not config.load(args.config):
     # error in loading config, exit
     sys.exit(1)
 
+metainfo_list: list[MetaInfo] = []
+report_list:   list[Report]   = []
 stock_list:    list[Stock]    = []
 strategy_list: list[Strategy] = []
 trader_list:   list[Trader]   = []
-report_list:   list[Report]   = []
-tradeseq_list: list[TradeSeq] = []
 
 log.wait("Loading Traders")
 for item in config.getTraderList():
@@ -55,12 +55,18 @@ log.wait("Loading Reports")
 for item in config.getReportList():
     report_list.append(ReportFactory.create(item))
 
+log.wait("Generating meta info")
+for stock in stock_list:
+    for meta in metainfo_list:
+        meta.generate(stock)
+
 log.wait("Applying Strategies")
 for stock in stock_list:
     for trader in trader_list:
         for strategy in strategy_list:
-            tradeseq_list.append(strategy.apply(trader, stock))
+            strategy.apply(trader, stock)
 
 log.wait("Generating Reports")
 for report in report_list:
-    report.generate(tradeseq_list)
+    for stock in stock_list:
+        report.generate(stock)
