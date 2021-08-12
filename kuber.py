@@ -15,8 +15,8 @@ cmdline.add_argument('--config', help="run config to use")
 cmdline.add_argument('--dump_config', action="store_true", help="dump complete config with name default_config.json")
 args = cmdline.parse_args()
 
+# Dump config and exit
 if args.dump_config:
-    # Dump config and exit
     RunConfig().dump()
     sys.exit(0)
 
@@ -25,48 +25,38 @@ if not args.config:
     log.error("No config specified")
     sys.exit(1)
 
-# Load config and exit on error
 config = RunConfig()
 
+# Load config and exit on error
 log.wait("Loading Config")
 if not config.load(args.config):
-    # error in loading config, exit
     sys.exit(1)
 
-metainfo_list: list[MetaInfo] = []
-report_list:   list[Report]   = []
-stock_list:    list[Stock]    = []
-strategy_list: list[Strategy] = []
-trader_list:   list[Trader]   = []
-
-log.wait("Loading Traders")
-for item in config.getTraderList():
-    trader_list.append(TraderFactory.create(item))
-
-log.wait("Loading Strategies")
-for item in config.getStrategyList():
-    strategy_list.append(StrategyFactory.create(item))
-
-log.wait("Loading Stock")
+log.wait("Loading Stocks")
+stock_list: list[Stock] = []
 for item in config.getStockList():
     stock_list.append(StockFactory.create(item))
 
-log.wait("Loading Reports")
-for item in config.getReportList():
-    report_list.append(ReportFactory.create(item))
-
-log.wait("Generating meta info")
-for stock in stock_list:
-    for meta in metainfo_list:
+log.wait("Generating Meta info")
+for item in config.getMetaInfoList():
+    meta = MetaInfoFactory.create(item)
+    for stock in stock_list:
         meta.generate(stock)
 
 log.wait("Applying Strategies")
 for stock in stock_list:
-    for trader in trader_list:
-        for strategy in strategy_list:
+    for t in config.getTraderList():
+        trader = TraderFactory.create(t)
+        for s in config.getStrategyList():
+            strategy = StrategyFactory.create(s)
             strategy.apply(trader, stock)
 
+dump_dir = config.getRunName()
+if not os.path.exists(dump_dir):
+    os.mkdir(dump_dir)
+
 log.wait("Generating Reports")
-for report in report_list:
+for item in config.getReportList():
+    report = ReportFactory.create(item, dump_dir)
     for stock in stock_list:
         report.generate(stock)

@@ -11,7 +11,8 @@ from trader import TraderFactory
 
 class RunConfig:
     def __init__(self) -> None:
-        self.__run_name = "config"
+        self.__config_name = "config.json"
+        self.__run_name = "reports"
         self.__tag_metainfo = "MetaInfo"
         self.__tag_name = "Name"
         self.__tag_report = "Reports"
@@ -55,11 +56,10 @@ class RunConfig:
             self.__tag_trader   : TraderFactory.getNames()
         }
 
-        json_filename = self.__run_name + ".json"
-        with open(json_filename, "w") as fp:
+        with open(self.__config_name, "w") as fp:
             json.dump(json_config, fp, indent=4)
         
-        log.info("Config", json_filename, "dumped")
+        log.info("Config", self.__config_name, "dumped")
 
 
 
