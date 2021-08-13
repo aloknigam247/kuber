@@ -2,9 +2,17 @@ import pandas as pd
 import os
 
 class Stock:
+    price = "Average Price"
+
     def __init__(self, name:str, stock_path: str) -> None:
         self.__df = pd.read_csv(stock_path, header=0, index_col=0, usecols=[2, 3, 4, 5, 6, 7, 8, 9])
         self.__name = name
+
+    def appendCol(self, title, data):
+        self.__df[title] = data
+
+    def getCol(self, col: str):
+        return self.__df[col].values
 
     def getData(self) -> pd.DataFrame:
         return self.__df
