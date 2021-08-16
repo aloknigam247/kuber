@@ -1,5 +1,5 @@
-import json
 import os
+import yaml
 
 from logger import Logger as log
 from metainfo import MetaInfoFactory
@@ -11,7 +11,7 @@ from trader import TraderFactory
 
 class RunConfig:
     def __init__(self) -> None:
-        self.__config_name = "config.json"
+        self.__config_name = "config.yaml"
         self.__run_name = "reports"
         self.__tag_metainfo = "MetaInfo"
         self.__tag_name = "Name"
@@ -47,7 +47,7 @@ class RunConfig:
         return validated_list, result
 
     def dump(self):
-        json_config = {
+        yaml_config = {
             self.__tag_name     : self.__run_name,
             self.__tag_metainfo : MetaInfoFactory.getNames(),
             self.__tag_report   : ReportFactory.getNames(),
@@ -57,7 +57,7 @@ class RunConfig:
         }
 
         with open(self.__config_name, "w") as fp:
-            json.dump(json_config, fp, indent=4)
+            yaml.safe_dump(yaml_config, fp, indent=4)
         
         log.info("Config", self.__config_name, "dumped")
 
@@ -69,7 +69,7 @@ class RunConfig:
             return False
 
         with open(config_file, "r") as fp:
-            config = json.load(fp)
+            config = yaml.safe_load(fp)
     
         self.__run_name = config[self.__tag_name]
         self.__metainfo_list, res5 = self.__validateName(config, MetaInfoFactory.getNames(), self.__tag_metainfo)

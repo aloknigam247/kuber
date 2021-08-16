@@ -12,7 +12,7 @@ from trader import *
 # Command line option parser
 cmdline = argparse.ArgumentParser(description="Kuber Trading Analysis")
 cmdline.add_argument('--config', help="run config to use")
-cmdline.add_argument('--dump_config', action="store_true", help="dump complete config with name default_config.json")
+cmdline.add_argument('--dump_config', action="store_true", help="dump complete config with name default_config.yaml")
 args = cmdline.parse_args()
 
 # Dump config and exit
