@@ -17,7 +17,7 @@ class Report:
 class LineChart(Report):
     def generate(self, stock: Stock):
         df = stock.getData()
-        fig = px.line(df)
+        fig = px.line(df, title=stock.getName())
         fig.write_html(self._dump_dir + "/" + stock.getName() + ".html")
 
 class ReportFactory:
