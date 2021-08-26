@@ -1,15 +1,21 @@
+from trade import TradeSeq
+
 import pandas as pd
 import os
 
 class Stock:
     price = "Average Price"
 
-    def __init__(self, name:str, stock_path: str) -> None:
-        self.__df = pd.read_csv(stock_path, header=0, index_col=0, usecols=[2, 3, 4, 5, 6, 7, 8, 9])
-        self.__name = name
+    def __init__(self, name: str, stock_path: str) -> None:
+        self.__df: pd.DataFrame = pd.read_csv(stock_path, header=0, index_col=0, usecols=[2, 3, 4, 5, 6, 7, 8, 9])
+        self.__name: str = name
+        self.__tradeSeq: dict[str, TradeSeq] = dict()
 
-    def appendCol(self, title, data):
+    def appendCol(self, title: str, data: list[str]) -> None:
         self.__df[title] = data
+    
+    def addTrade(self, name:str, trade:TradeSeq) -> None:
+        self.__tradeSeq[name] = trade
 
     def getCol(self, col: str):
         return self.__df[col].values
@@ -19,6 +25,12 @@ class Stock:
 
     def getName(self) -> str:
         return self.__name
+
+    def getIndex(self) -> pd.Index:
+        return self.__df.index
+
+    def getTrades(self) -> dict[str, TradeSeq]:
+        return self.__tradeSeq
 
 class StockFactory:
     __stock_list: list[str] = None

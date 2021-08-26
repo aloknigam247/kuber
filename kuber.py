@@ -45,11 +45,9 @@ for item in config.getMetaInfoList():
 
 log.wait("Applying Strategies")
 for stock in stock_list:
-    for t in config.getTraderList():
-        trader = TraderFactory.create(t)
-        for s in config.getStrategyList():
-            strategy = StrategyFactory.create(s)
-            strategy.apply(trader, stock)
+    for s in config.getStrategyList():
+        strategy = StrategyFactory.create(s)
+        strategy.apply(stock, stock)
 
 dump_dir = config.getRunName()
 if not os.path.exists(dump_dir):

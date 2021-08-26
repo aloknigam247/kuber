@@ -47,7 +47,7 @@ class RunConfig:
         return validated_list, result
 
     def dump(self):
-        yaml_config = {
+        yaml_config: dict[str, list[str]] = {
             self.__tag_name     : self.__run_name,
             self.__tag_metainfo : MetaInfoFactory.getNames(),
             self.__tag_report   : ReportFactory.getNames(),
