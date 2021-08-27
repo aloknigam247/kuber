@@ -29,7 +29,7 @@ class Stock:
     def getIndex(self) -> pd.Index:
         return self.__df.index
 
-    def getTrades(self) -> dict[str, TradeSeq]:
+    def getAllTrades(self) -> dict[str, TradeSeq]:
         return self.__tradeSeq
 
 class StockFactory:

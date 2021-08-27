@@ -26,7 +26,7 @@ class TradeMarker(Report):
         index_arr = stock.getIndex()
         graph_list: list[go.Scatter] = []
         data_set: set[str] = set()
-        for tname, tseq in stock.getTrades().items():
+        for tname, tseq in stock.getAllTrades().items():
             log.info("Generating trade marker", tname)
             value_arr = stock.getCol(tseq.getPriceColName())
             buy_xdata = []
