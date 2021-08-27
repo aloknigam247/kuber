@@ -1,2 +1,0 @@
-class TradeSeq:
-    pass

@@ -2,7 +2,6 @@ import argparse
 import sys
 
 from logger import Logger as log
-from metainfo import *
 from reports import *
 from runconfig import *
 from stock import *
@@ -37,19 +36,11 @@ stock_list: list[Stock] = []
 for item in config.getStockList():
     stock_list.append(StockFactory.create(item))
 
-log.wait("Generating Meta info")
-for item in config.getMetaInfoList():
-    meta = MetaInfoFactory.create(item)
-    for stock in stock_list:
-        meta.generate(stock)
-
 log.wait("Applying Strategies")
 for stock in stock_list:
-    for t in config.getTraderList():
-        trader = TraderFactory.create(t)
-        for s in config.getStrategyList():
-            strategy = StrategyFactory.create(s)
-            strategy.apply(trader, stock)
+    for s in config.getStrategyList():
+        strategy = StrategyFactory.create(s)
+        strategy.apply(stock, stock)
 
 dump_dir = config.getRunName()
 if not os.path.exists(dump_dir):
