@@ -12,7 +12,6 @@ class RunConfig:
     def __init__(self) -> None:
         self.__config_name = "config.yaml"
         self.__run_name = "reports"
-        self.__tag_metainfo = "MetaInfo"
         self.__tag_name = "Name"
         self.__tag_report = "Reports"
         self.__tag_stock = "Stocks"
