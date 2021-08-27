@@ -19,7 +19,6 @@ class RunConfig:
         self.__tag_strategy = "Strategy"
         self.__tag_trader = "Traders"
 
-        self.__metainfo_list: list[str] = []
         self.__report_list: list[str] = []
         self.__stock_list: list[str] = []
         self.__strategy_list: list[str] = []
