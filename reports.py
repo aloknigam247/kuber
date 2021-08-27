@@ -1,3 +1,4 @@
+from logger import Logger as log
 from trade import TradeAction
 from stock import Stock
 
@@ -26,6 +27,7 @@ class TradeMarker(Report):
         graph_list: list[go.Scatter] = []
         data_set: set[str] = set()
         for tname, tseq in stock.getTrades().items():
+            log.info("Generating trade marker", tname)
             value_arr = stock.getCol(tseq.getPriceColName())
             buy_xdata = []
             buy_ydata = []
@@ -43,8 +45,8 @@ class TradeMarker(Report):
                     sell_xdata.append(index_arr[trade.index])
                     sell_ydata.append(value_arr[trade.index])
 
-            graph_list.append(go.Scatter(x=buy_xdata, y=buy_ydata, mode='markers', name='Buy'))
-            graph_list.append(go.Scatter(x=sell_xdata, y=sell_ydata, mode='markers', name='Sell'))
+            graph_list.append(go.Scatter(x=buy_xdata, y=buy_ydata, mode='markers', name=tname + ' Buy'))
+            graph_list.append(go.Scatter(x=sell_xdata, y=sell_ydata, mode='markers', name=tname + ' Sell'))
 
         df = stock.getData()
         fig = px.line(df, title=stock.getName(), y=list(data_set))
